@@ -47,13 +47,19 @@ public class SmsServiceAlidayuImplTest {
 		
 		SmsInfo smsInfo = new SmsInfo();
 		smsInfo.setTransId(String.valueOf(System.currentTimeMillis()));
-		smsInfo.setDestAppName("chunzeAcademy");
-		smsInfo.setSmsTemplateCode("Register");
+		smsInfo.setDestAppName("cootalk");
+		smsInfo.setSmsTemplateCode("CooTalk_Register");
 		smsInfo.setCountryCode("0086");
-		smsInfo.setCalledPhoneNumbers("00861861016171133");
-		smsInfo.setParameters("{ \"code\":\"157098\"}");
+		smsInfo.setCalledPhoneNumbers("008618610161711");
+		smsInfo.setParameters("{ \"code\":\"157098\",\"code1\":\"157098\",\"msgs1\":\"157098\"}");
 		smsInfo.setCheckCrc(SecuritySmsAlgorithm.getCrcString(transferKey, smsInfo));
-		int iRet = alidayySmsService.sendSms(smsInfo);
+		int iRet=0;
+		try {
+			iRet = alidayySmsService.sendSms(smsInfo);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		assertEquals("send sms need ok but error",CommunicateConst.RESULT_SUCCESS,iRet);
 	}
 

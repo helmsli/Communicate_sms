@@ -8,6 +8,8 @@ import com.company.communicate.utils.SecuritySmsAlgorithm;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,9 @@ import com.aliyuncs.profile.IClientProfile;
 @Service("alidayuSmsService")
 public class SmsServiceAlidayuImpl implements SmsService,InitializingBean {
 
+	 private Logger log = LoggerFactory.getLogger(getClass());
+	 
+	 
 	@Value("${alidayu.accessKeyId}")  
 	private String accessKeyId;
 	@Value("${alidayu.accessKeySecret}")  
@@ -129,7 +134,7 @@ public class SmsServiceAlidayuImpl implements SmsService,InitializingBean {
 				{
 					return CommunicateConst.RESULT_Error_NotEnough;
 				}
-				
+				log.error(smsInfo + ":" + sendSmsResponse.getCode());
 					
 			} catch (ServerException e) {
 				// TODO Auto-generated catch block
@@ -162,7 +167,13 @@ public class SmsServiceAlidayuImpl implements SmsService,InitializingBean {
 	public String getAlidayTemplateCode(String clientTemplateCode)
 	{
 		//System.out.println(templateMaps + ":" + clientTemplateCode + ":" + this.templateMaps.get(clientTemplateCode.toLowerCase()));
-		return this.templateMaps.get(clientTemplateCode.toLowerCase());
+		String retTemplateCode = this.templateMaps.get(clientTemplateCode.toLowerCase());
+		if(retTemplateCode==null)
+		{
+			log.error("can not find template:" + clientTemplateCode );
+			return clientTemplateCode;
+		}
+		return retTemplateCode;
 	}
 	@Override
 	public void afterPropertiesSet() throws Exception {

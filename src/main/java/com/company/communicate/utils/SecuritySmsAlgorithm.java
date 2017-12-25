@@ -23,6 +23,8 @@ public  class SecuritySmsAlgorithm {
 			ls.append(smsInfo.getCalledPhoneNumbers());
 			ls.append("*");
 			ls.append(smsInfo.getDestAppName());
+			ls.append("*");
+			ls.append(smsInfo.getParameters());
 			return DigestUtils.md5DigestAsHex(ls.toString().getBytes("UTF-8"));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
